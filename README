@@ -1,5 +1,21 @@
 Overview:
 
+This is a set of two scripts that help to create and mange a well structured angular application.
+
+init.js
+- creates a main module, to which future modules will be added
+- creates a index.tpl.html ready to work with a very usefull grunt task 'init source'
+
+create.js:
+- creates a set of module-controller-directive-template-css_preprocessor-dictionary for a defined component
+- folder with all the files is moved to the parent component
+- all the paths inside files are updated relative to the parent component or root folder
+- inserts all newly creates js'es into index.html
+- basically handles all the arduous work connected with creation a neat and clear angular file structure
+
+_____________________________________
+Background:
+
 JavaScript is a language that, when not used wisely, can lead to endless spaghetti code, with no beginning, no end, no meatballs. Thankfully there are frameworks thanks to which it is far easier to keep code that is neat and make structure intuitive. Sadly ‘far easier’ still doesn’t mean that it is simple and doesn’t need make an investigation how to squeeze the best from the framework.
 
 When it comes to Angular the easiest possible pattern of keeping code neat is to make separate folders for directives, controllers, filters, services and views. So when we have i.e. 3 controllers, there will be 3 separate files all stored under folder named controllers. This pattern works well but only for small or very small projects. When project consist of lots of components, suddenly it becomes super-complicated and it is difficult to maintain a project.
@@ -63,13 +79,21 @@ Looks like a lot of work to do in order to maintain such a structure, isn’t it
 In order to ease the work I have made this script.
 
 
-
+_____________________________
 Usage:
 
 
 Module generator is a tool for an automatic generation of files and assertion to html.
+
+
+In order to create main module and index.html edit generationConfigs.js and then run:
+
+node init
+
 In order to run the generator type in terminal:
+
 node create [componentsName] [parentElement (optional)]
+
 after pressing enter you will see the structure of created files in terminal:
 
 i.e. executing
@@ -78,7 +102,7 @@ will give an output:
 in src/scripts/component
 ---------> componentCtrl.js
 ---------> componentDrtv.js
----------> component.module.js
+---------> componentMdl.js
 ---------> i18n
 --------------> en.json
 --------------> pl.json
@@ -95,7 +119,7 @@ When you define a parent element the component will be automatically moved to th
 
 The code inside files looks as follows:
 
-component.module.js
+componentMdl.js
 app.component = angular.module('componentModule', [])
 .config(['$translatePartialLoaderProvider', function ($translatePartialLoaderProvider) {
   'use strict';
