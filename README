@@ -1,0 +1,151 @@
+Overview:
+
+JavaScript is a language that, when not used wisely, can lead to endless spaghetti code, with no beginning, no end, no meatballs. Thankfully there are frameworks thanks to which it is far easier to keep code that is neat and make structure intuitive. Sadly ‘far easier’ still doesn’t mean that it is simple and doesn’t need make an investigation how to squeeze the best from the framework.
+
+When it comes to Angular the easiest possible pattern of keeping code neat is to make separate folders for directives, controllers, filters, services and views. So when we have i.e. 3 controllers, there will be 3 separate files all stored under folder named controllers. This pattern works well but only for small or very small projects. When project consist of lots of components, suddenly it becomes super-complicated and it is difficult to maintain a project.
+
+
+
+Thankfully we can use the magnificent modular pattern that will simplify the architecture dramatically. The main goal of such a pattern is to create a separate module for every component. The module is registered to the main application module, as one of dependencies, just like you add external angular modules. This new module and all of the logic connected to it should be placed in the separate folder, what makes the project structure far more intuitive.
+
+
+
+With the few improvements to the modular pattern we can make a structure that allows to get a very quick overview about the components function just by a short glimpse on the file structure. All we need is to follow some simple rules.
+First of all, one module should consist of only one controller, directive and html template. All of them should be defined inside a directive. Controller, directive and template html should be stored in separate folders. What is more we should store also compile and link function (if such exist in a component) in a separate file. Such attitude improve the clarity of a file structure. Imagine we are using a version control and somebody is changing a file. In a traditional module pattern, when somebodys changed a directive we would have to investigate which part of directive has been changed (link function? compile function? name of a html template?), on the other hand when we have all the functions represents different part of logic in separate files it i far easier to understand what has been changed - the filename speaks of itself.
+In order not to use global naming it is always wise to use namespaces.
+The example of using namespaces and directives with the functional separation is shown below:
+
+main module:
+
+var myNamespace = {};
+
+(function(namespace){
+   var projectModules = {
+       externalModules: [
+       ],
+       internalModules: [
+       ],
+       get: function () {
+           'use strict';
+           return this.externalModules.concat(this.internalModules);
+       }
+   };
+   namespace.app = angular.module(myApp', projectModules.get());
+})(myNamespace)
+
+A directive:
+
+namespace.app.myApp.directive('myComponent', function(){
+   'use strict';
+   var template = 'src/scripts/componentsTemplate.html';
+   return {
+       restrict:'AE',
+       controller:'componentsCtrl',
+       templateUrl: template,
+       link: componentsLinkFunction
+   };
+
+});
+
+A link function:
+
+(function(namespace){
+
+   function componentsLinkFunction(){
+
+   }
+})(namespace)
+
+thanks to such an approach we have functions that are only visible in the provided namespace.
+You could also noticed that in the mainmodule there is a clear separation between the modules from within application and the 3rd party modules.
+
+Looks like a lot of work to do in order to maintain such a structure, isn’t it? Create all of separate files, then add them into index.html, have in mind all of the relative paths of template.htmls…
+In order to ease the work I have made this script.
+
+
+
+Usage:
+
+
+Module generator is a tool for an automatic generation of files and assertion to html.
+In order to run the generator type in terminal:
+node create [componentsName] [parentElement (optional)]
+after pressing enter you will see the structure of created files in terminal:
+
+i.e. executing
+node create component
+will give an output:
+in src/scripts/component
+---------> componentCtrl.js
+---------> componentDrtv.js
+---------> component.module.js
+---------> i18n
+--------------> en.json
+--------------> pl.json
+---------> styles
+-------------->component.less
+---------> component.html
+---------> tests
+--------------> componentCtrl.test.js
+--------------> componentDrtv.test.js
+
+what means that all of those files were generated and inserted to index.html
+
+When you define a parent element the component will be automatically moved to the correct folder with all of the references in files updated.
+
+The code inside files looks as follows:
+
+component.module.js
+app.component = angular.module('componentModule', [])
+.config(['$translatePartialLoaderProvider', function ($translatePartialLoaderProvider) {
+  'use strict';
+  $translatePartialLoaderProvider.addPart('component');
+}]);
+
+componentCtrl.js
+app.component.controller('componentCtrl', function($scope){
+  'use strict';
+});
+
+componentDrtv.js
+app.component.directive('component', function(){
+  'use strict';
+  var template = 'src/scripts/component/component.html';
+  return {
+     restrict:'AE',
+     controller:'componentCtrl',
+      templateUrl: template,
+      compile: function(elem){
+        elem.attr('templateurl', template);
+     }
+  };
+});
+
+componentCtrl.test.js
+describe('componentCtrl has no tests implemented yet', function(){
+"use strict";
+});
+
+componentDrtv.test.js
+describe('componentDrtv has no tests implemented yet', function(){
+"use strict";
+});
+
+component.less
+@import "../../../styles/base";
+
+#componentComponent{
+}
+
+Generated module will by automatically added to the mainModule as an internal module:
+var projectModules ={
+  externalModules : [
+     'i18nModule'],
+  internalModules : [
+     'componentModule'],
+  get: function(){
+     'use strict';
+     return this.externalModules.concat(this.internalModules);
+  }
+};
+
