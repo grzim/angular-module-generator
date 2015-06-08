@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>--namespace--</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/css/style.min.css">
+</head>
+<body ng-app="--app-name--">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!--SCRIPTS-->
+<!--libs-->
+<!-- angular and angular libs -->
+<!-- include: "type": "js", "files": "bower_components/angular/angular.min.js" -->
+<!-- include: "type": "js", "files": "bower_components/angular-translate/angular-translate.min.js" -->
+
+<!-- bower components -->
+<!-- include: "type": "js", "files": ["bower_components/**/*.min.js","!bower_components/angular/angular.min.js", "!bower_components/angular-translate/angular-translate.min.js"] -->
+
+<!--modules:-->
+<!--main components-->
+
+<!-- include: "type": "js", "files": "scripts/*--module-suffix--.js" -->
+
+<!--components-->
+
+<!-- include: "type": "js", "files": "scripts/*/**/*--module-suffix--.js" -->
+
+<!--top components-->
+
+<!--services-->
+<!-- include: "type": "js", "files": "scripts/*--service-suffix--.js" -->
+<!--controllers-->
+<!-- include: "type": "js", "files": "scripts/*--controller-suffix--.js" -->
+<!--directives-->
+<!-- include: "type": "js", "files": "scripts/*--directive-suffix--.js" -->
+<!--configs, constants, values and other-->
+<!-- include: "type": "js", "files": ["scripts/*.js","!scripts/*--module-suffix--.js", "!scripts/*--service-suffix--.js", "!scripts/*--controller-suffix--.js", "!scripts/*--directive-suffix--.js"] -->
+
+<!--components-->
+
+<!--services-->
+<!-- include: "type": "js", "files": "scripts/*/**/*--service-suffix--.js" -->
+<!--controllers-->
+<!-- include: "type": "js", "files": "scripts/*/**/*--controller-suffix--.js" -->
+<!--directives-->
+<!-- include: "type": "js", "files": "scripts/*/**/*--directive-suffix--.js" -->
+<!--configs, constants, values and other-->
+<!-- include: "type": "js", "files": ["scripts/*/**/*.js","!scripts/*/**/*--module-suffix--.js", "!scripts/*/**/*--service-suffix--.js", "!scripts/*/**/*--controller-suffix--.js", "!scripts/*/**/*--directive-suffix--.js"] -->
+
+</body>
+</html>

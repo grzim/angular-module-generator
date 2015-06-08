@@ -1,0 +1,10 @@
+--namespace--.app.--name--.directive('--name--', function(){
+    'use strict';
+    var template = 'src/scripts/--parent----name--/--name--.html';
+    return {
+        restrict:'AE',
+        controller:'--name--Ctrl',
+        templateUrl: template
+    };
+
+});

@@ -1,0 +1,4 @@
+--namespace--.app.--name--.controller('--name--Ctrl', function ($scope) {
+    'use strict';
+});
+

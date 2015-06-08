@@ -1,0 +1,5 @@
+--namespace--.app.--name-- = angular.module('--name--Mdl', []).config(['$translatePartialLoaderProvider', function ($translatePartialLoaderProvider) {
+    'use strict';
+    $translatePartialLoaderProvider.addPart('--name--');
+}]);
+

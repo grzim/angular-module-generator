@@ -1,0 +1,15 @@
+var --namespace-- = {};
+
+(function(namespace){
+    var projectModules = {
+        externalModules: [
+        ],
+        internalModules: [
+        ],
+        get: function () {
+            'use strict';
+            return this.externalModules.concat(this.internalModules);
+        }
+    };
+    namespace.app = angular.module('--app-name--', projectModules.get());
+})(--namespace--);

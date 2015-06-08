@@ -1,0 +1,12 @@
+{
+  "name": "great project",
+  "dependencies": {
+    "angular": "*",
+    "angular-resource": "*",
+    "angular-translate": "*",
+    "angular-translate-loader-static-files": "*",
+    "angular-mocks": "*",
+    "angular-translate-loader-partial": "*",
+    "angular-ui-router": "*"
+  }
+}

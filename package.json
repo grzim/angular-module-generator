@@ -1,0 +1,9 @@
+{
+  "name": "module-generator",
+  "version": "1.0.0",
+  "dependencies": {
+    "grunt-include-source": "^0.4.1",
+    "express": "^4.11.1",
+    "touch": "^0.0.3"
+  }
+}
