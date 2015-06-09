@@ -1,6 +1,6 @@
 Overview:
 
-This is a set of two scripts that help to create and mange a well structured angular application.
+This is a set of two scripts (+ configuration) that help to create and mange a well structured angular application.
 
 init.js
 - creates a main module, to which future modules will be added
