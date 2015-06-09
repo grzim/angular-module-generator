@@ -4,34 +4,32 @@ This is a set of two scripts that help to create and mange a well structured ang
 
 init.js
 - creates a main module, to which future modules will be added
-- creates a index.tpl.html ready to work with a very usefull grunt task 'init source'
+- creates a index.tpl.html ready to work with a very useful grunt task 'init source'
 
 create.js:
-- creates a set of module-controller-directive-template-css_preprocessor-dictionary for a defined component
-- folder with all the files is moved to the parent component
-- all the paths inside files are updated relative to the parent component or root folder
-- inserts all newly creates js'es into index.html
-- basically handles all the arduous work connected with creation a neat and clear angular file structure
+- creates a set of module-controller-directive-template-css_preprocessor-dictionary for a defined component in a root directory or (when specified) in a parent-component directory
+- all the paths inside files are updated relative to the parent component/root folder
+- inserts all newly creates js'es into index.html (with the help of grunts init source)
+- basically handles all the arduous work connected to creation of a neat and clear angular file structure
 
 _____________________________________
 Background:
 
-JavaScript is a language that, when not used wisely, can lead to endless spaghetti code, with no beginning, no end, no meatballs. Thankfully there are frameworks thanks to which it is far easier to keep code that is neat and make structure intuitive. Sadly ‘far easier’ still doesn’t mean that it is simple and doesn’t need make an investigation how to squeeze the best from the framework.
+JavaScript is a language that, when not used wisely, can lead to endless spaghetti code, with no beginning, no end, no meatballs. Thankfully there are frameworks thanks to which it is far easier to keep code neat and make a file structure intuitive. Sadly ‘far easier’ still doesn’t mean that it is simple and doesn’t need to make an investigation about how to squeeze the best from the framework.
 
-When it comes to Angular the easiest possible pattern of keeping code neat is to make separate folders for directives, controllers, filters, services and views. So when we have i.e. 3 controllers, there will be 3 separate files all stored under folder named controllers. This pattern works well but only for small or very small projects. When project consist of lots of components, suddenly it becomes super-complicated and it is difficult to maintain a project.
+When it comes to Angular the easiest possible pattern of keeping code fairly neat is to make separate folders for directives, controllers, filters, services and views. Meaning - when we have i.e. 3 controllers, there will be 3 separate files all stored under folder named controllers. This pattern works well but only for small or very small projects. As soon as project grows and start to consist more components, suddenly it becomes super-complicated and it is difficult to maintain a clear structure of a project.
 
+Thankfully we can use the magnificent modular pattern that will simplify the architecture dramatically. The main goal of such a pattern is to create a separate module for every component. The module is registered to the main application module, as one of dependencies, just like external, 3rd party, angular modules. This new module and all of the logic connected to it should be placed in the separate folder, what makes the project structure far more intuitive.
 
+With the few improvements to the classical modular pattern we can make a structure that allows to get a very quick overview about the components functionality just by a short glimpse on the file structure. All we need is to follow some simple rules.
+First of all, one module should consist of only one controller, one directive and one html template. All of them should be defined inside a directive. Controller, directive and template html should be stored in separate files. What is more we should store also compile and link function (if such exist in a component) in a separate file. Such an attitude improve the clarity of the file structure.
+Just by opening a folder it is clear if there are link and compile function, we have all of the logic in one place and we are forced to create elements that have a single logical responsibility as the module can consist only of one controller/directive/template.
+Imagine we are using a version control and somebody is changing a file. In a traditional module pattern, when somebody has changed a directive we would have to investigate which part of directive has been changed (link function? compile function? name of an html template?), on the other hand when we have all the functions represents different part of logic in separate files it i far easier to understand what has been changed - the filename speaks of itself.
 
-Thankfully we can use the magnificent modular pattern that will simplify the architecture dramatically. The main goal of such a pattern is to create a separate module for every component. The module is registered to the main application module, as one of dependencies, just like you add external angular modules. This new module and all of the logic connected to it should be placed in the separate folder, what makes the project structure far more intuitive.
-
-
-
-With the few improvements to the modular pattern we can make a structure that allows to get a very quick overview about the components function just by a short glimpse on the file structure. All we need is to follow some simple rules.
-First of all, one module should consist of only one controller, directive and html template. All of them should be defined inside a directive. Controller, directive and template html should be stored in separate folders. What is more we should store also compile and link function (if such exist in a component) in a separate file. Such attitude improve the clarity of a file structure. Imagine we are using a version control and somebody is changing a file. In a traditional module pattern, when somebodys changed a directive we would have to investigate which part of directive has been changed (link function? compile function? name of a html template?), on the other hand when we have all the functions represents different part of logic in separate files it i far easier to understand what has been changed - the filename speaks of itself.
 In order not to use global naming it is always wise to use namespaces.
-The example of using namespaces and directives with the functional separation is shown below:
+The example of using namespaces, directives with the functional separation and link function is shown below:
 
-main module:
+mainModule:
 
 var myNamespace = {};
 
@@ -51,31 +49,28 @@ var myNamespace = {};
 
 A directive:
 
-namespace.app.myApp.directive('myComponent', function(){
+namespace.myApp.sampleComponent.directive('myComponent', function(){
    'use strict';
    var template = 'src/scripts/componentsTemplate.html';
    return {
        restrict:'AE',
        controller:'componentsCtrl',
        templateUrl: template,
-       link: componentsLinkFunction
+       link: namespace.myApp.sampleComponent.linkFunction
    };
 
 });
 
 A link function:
 
-(function(namespace){
+namespace.myApp.sampleComponent.linkFunction = function(){
 
-   function componentsLinkFunction(){
+}
 
-   }
-})(namespace)
+thanks to such an approach we have functions that are only visible in the provided namespace. In one namespace we can have more than one angular module if needed.
+In mainModule there is a clear separation between the modules from within application and the 3rd party modules.
 
-thanks to such an approach we have functions that are only visible in the provided namespace.
-You could also noticed that in the mainmodule there is a clear separation between the modules from within application and the 3rd party modules.
-
-Looks like a lot of work to do in order to maintain such a structure, isn’t it? Create all of separate files, then add them into index.html, have in mind all of the relative paths of template.htmls…
+Looks like a lot of work to do in order to maintain such a structure, isn’t it? Create all of separate files, then add them into index.html, have in mind all of the relative paths of template.htmls, css prepocessors, dictionaries…
 In order to ease the work I have made this script.
 
 
