@@ -47,6 +47,11 @@ var myNamespace = {};
    namespace.app = angular.module(myApp', projectModules.get());
 })(myNamespace)
 
+Thanks to such an approach we have functions that are only visible in the provided namespace. In one namespace we can have more than one angular module if needed.
+In mainModule there is a clear separation between the modules from within application and the 3rd party modules.
+
+
+
 A directive:
 
 namespace.myApp.sampleComponent.directive('myComponent', function(){
@@ -56,10 +61,16 @@ namespace.myApp.sampleComponent.directive('myComponent', function(){
        restrict:'AE',
        controller:'componentsCtrl',
        templateUrl: template,
-       link: namespace.myApp.sampleComponent.linkFunction
+       compile: namespace.myApp.sampleComponent.compileFunction
    };
 
 });
+
+A compile function:
+
+namespace.myApp.sampleComponent.compileFunction = function(){
+    return namespace.myApp.sampleComponent.linkFunction.bind(this);
+}
 
 A link function:
 
@@ -67,9 +78,7 @@ namespace.myApp.sampleComponent.linkFunction = function(){
 
 }
 
-thanks to such an approach we have functions that are only visible in the provided namespace. In one namespace we can have more than one angular module if needed.
-In mainModule there is a clear separation between the modules from within application and the 3rd party modules.
-
+Thanks to binding compileFunction's this to the linkFunction we are not loosing a scope, so that we can make a shared property (inside an object that a directive returns), in order to maintain a communication between all functions.
 Looks like a lot of work to do in order to maintain such a structure, isn’t it? Create all of separate files, then add them into index.html, have in mind all of the relative paths of template.htmls, css prepocessors, dictionaries…
 In order to ease the work I have made this script.
 
