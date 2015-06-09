@@ -1,13 +1,13 @@
 var --namespace-- = {};
 
 (function(namespace){
+    'use strict';
     var projectModules = {
         externalModules: [
         ],
         internalModules: [
         ],
         get: function () {
-            'use strict';
             return this.externalModules.concat(this.internalModules);
         }
     };
